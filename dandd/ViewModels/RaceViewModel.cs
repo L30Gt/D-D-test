@@ -33,9 +33,7 @@ namespace dandd.ViewModels
 
         public RaceViewModel()
         {
-            client = new HttpClient();
-            Races = new ObservableCollection<Race>();
-            _serializerOptions = new JsonSerializerOptions { PropertyNameCaseInsensitive = true };
+            
         }
 
         public ICommand GetRacesCommand => new Command(async () => await LoadRacesAsync());

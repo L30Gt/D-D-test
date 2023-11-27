@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace dandd.Models
 {
-    public class Race
+    public class Races
     {
         public string Index { get; set; }
         public string Name { get; set; }
