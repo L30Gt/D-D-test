@@ -12,7 +12,7 @@ namespace dandd.ViewModels
 {
     internal partial class ClassViewModel : ObservableObject
     {
-        /*
+        
         private readonly ClassService _classService;
 
         [ObservableProperty]
@@ -23,6 +23,6 @@ namespace dandd.ViewModels
         public string _Url;
 
         public ObservableCollection<Class> _class;
-    */
+    
     }
 }

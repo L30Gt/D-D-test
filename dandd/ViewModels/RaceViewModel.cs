@@ -1,5 +1,6 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using dandd.Models;
+using dandd.Services;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -15,10 +16,7 @@ namespace dandd.ViewModels
 {
     internal partial class RaceViewModel : ObservableObject, IDisposable
     {
-        HttpClient client;
-
-        JsonSerializerOptions _serializerOptions;
-        string baseUrl = "https://www.dnd5eapi.co/api/";
+        private readonly ClassService _classService;
 
         [ObservableProperty]
         public string _Index;
@@ -28,31 +26,27 @@ namespace dandd.ViewModels
         public string _Url;
 
         [ObservableProperty]
-        public ObservableCollection<Race> _races;
+        public ObservableCollection<Races> _races;
 
 
         public RaceViewModel()
         {
-            
+            Races = new ObservableCollection<Races>();
+            _classService = new ClassService();
         }
 
         public ICommand GetRacesCommand => new Command(async () => await LoadRacesAsync());
 
         private async Task LoadRacesAsync()
         {
-            var url = $"{baseUrl}/races";
             try
             {
-                var response = await client.GetAsync(url);
-                if (response.IsSuccessStatusCode)
-                {
-                    string content = await response.Content.ReadAsStringAsync();
-                    Races = JsonSerializer.Deserialize<ObservableCollection<Race>>(content, _serializerOptions);
-                }
+                Races = await _classService.GetAllClassesAsync();       
             }
             catch (Exception e)
             {
                 Debug.WriteLine(e.Message);
+                Debug.WriteLine("Exceção do service");
             }
         }
 

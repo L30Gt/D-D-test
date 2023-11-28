@@ -1,4 +1,5 @@
-﻿using System;
+﻿using dandd.Models;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
@@ -11,19 +12,20 @@ namespace dandd.Services
 {
     public class ClassService
     {
-        HttpClient client;
+        private readonly HttpClient client;
+        private readonly JsonSerializerOptions _serializerOptions;
+        private readonly string baseUrl = "https://www.dnd5eapi.co/api/";
 
-        JsonSerializerOptions _serializerOptions;
-        string baseUrl = "https://www.dnd5eapi.co/api/";
-
-        public danddServices()
+        public ClassService()
         {
             client = new HttpClient();
-            Races = new ObservableCollection<Race>();
+            Races = new ObservableCollection<Races>();
             _serializerOptions = new JsonSerializerOptions { PropertyNameCaseInsensitive = true };
         }
 
-        public async Task<ObservableCollection<dandd>> GetDanddsAsync()
+        public ObservableCollection<Races> Races { get; private set; }
+
+        public async Task<ObservableCollection<Races>> GetAllClassesAsync()
         {
             var url = $"{baseUrl}/races";
             try
@@ -32,8 +34,9 @@ namespace dandd.Services
                 if (response.IsSuccessStatusCode)
                 {
                     string content = await response.Content.ReadAsStringAsync();
-                    Races = JsonSerializer.Deserialize<ObservableCollection<Race>>(content, _serializerOptions);
+                    Races = JsonSerializer.Deserialize<ObservableCollection<Races>>(content, _serializerOptions);
                 }
+                return new ObservableCollection<Races>();
             }
             catch (Exception e)
             {
